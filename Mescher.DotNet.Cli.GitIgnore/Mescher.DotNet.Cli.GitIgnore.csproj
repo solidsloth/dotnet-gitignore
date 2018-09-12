@@ -3,6 +3,19 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <id>dotnet-gitignore</id>
+    <version>1.0.1</version>
+    <title>dotnet-gitignore</title>
+    <authors>Mark Escher</authors>
+    <owners>Mark Eschergi</owners>
+    <licenseUrl>https://github.com/solidsloth/dotnet-gitignore/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/solidsloth/dotnet-gitignore</projectUrl>
+    <iconUrl></iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A dotnet CLI extension for generating Visual Studio .gitignore files.</description>
+    <releaseNotes>Initial Commit</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>.gitignore ignore dotnet cli</tags>
   </PropertyGroup>
 
   <ItemGroup>
