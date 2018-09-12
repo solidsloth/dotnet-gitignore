@@ -1,15 +1,13 @@
 {
     "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/Mescher.DotNet.Cli.GitIgnore/Mescher.DotNet.Cli.GitIgnore.csproj"
-            ],
-            "problemMatcher": "$msCompile"
-        }
-    ]
+    "tasks": [{
+        "label": "build",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+            "build",
+            "${workspaceFolder}/Mescher.DotNet.Cli.GitIgnore/dotnet-gitignore.csproj"
+        ],
+        "problemMatcher": "$msCompile"
+    }]
 }
