@@ -99,7 +99,7 @@ namespace Mescher.DotNet.Cli.GitIgnore
                     Environment.Exit(1);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 System.Console.Error.WriteLine($"Failed to download {GitIgnore}.");
                 Environment.Exit(1);
