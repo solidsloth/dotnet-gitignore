@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <id>dotnet-gitignore</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <title>dotnet-gitignore</title>
     <authors>solidsloth</authors>
     <owners>Mark Escher</owners>
@@ -13,7 +13,7 @@
     <repositoryUrl>https://github.com/solidsloth/dotnet-gitignore</repositoryUrl>
     <iconUrl></iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A dotnet CLI extension for generating Visual Studio .gitignore files.</description>
+    <description>Updated where the file is cached for better cross platform support.</description>
     <releaseNotes>Added better error handling and offline caching.</releaseNotes>
     <copyright>Copyright © Mark Escher 2018</copyright>
     <tags>.gitignore ignore dotnet cli</tags>
