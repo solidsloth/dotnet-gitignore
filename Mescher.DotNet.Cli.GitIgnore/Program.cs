@@ -12,9 +12,8 @@ namespace Mescher.DotNet.Cli.GitIgnore
         public static int Main(string[] args)
             => CommandLineApplication.Execute<Program>(args);
 
-        public static string AppDataPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "dotnet-gitignore");
+        public static string CacheDirectory =>
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dotnet", "tools", ".dotnet-gitignore", "cache");
 
         const string GitIgnore = ".gitignore";
 
@@ -44,8 +43,8 @@ namespace Mescher.DotNet.Cli.GitIgnore
                 }
             }
 
-            string cacheFile = Path.Combine(AppDataPath, "cache", GitIgnore);
-            string cacheFileTmp = Path.Combine(AppDataPath, "cache", "_" + GitIgnore);
+            string cacheFile = Path.Combine(CacheDirectory, GitIgnore);
+            string cacheFileTmp = Path.Combine(CacheDirectory, "_" + GitIgnore);
             string outputFile = Path.Combine(output, GitIgnore);
 
             Directory.CreateDirectory(Path.GetDirectoryName(cacheFile));
