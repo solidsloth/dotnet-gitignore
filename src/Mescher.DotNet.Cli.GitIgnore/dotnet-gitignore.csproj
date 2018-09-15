@@ -13,7 +13,7 @@
     <repositoryUrl>https://github.com/solidsloth/dotnet-gitignore</repositoryUrl>
     <iconUrl></iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Updated where the file is cached for better cross platform support.</description>
+    <description>A dotnet cli extensions for generating .gitignore files.</description>
     <releaseNotes>Added template commands, including listing available templates, and specifying a custom template to download.</releaseNotes>
     <copyright>Copyright © Mark Escher 2018</copyright>
     <tags>.gitignore ignore dotnet cli</tags>
