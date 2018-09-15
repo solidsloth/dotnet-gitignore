@@ -57,6 +57,14 @@ namespace Mescher.DotNet.Cli.GitIgnore
                 }
             }
 
+            string outputFile = Path.Combine(output, GitIgnore);
+
+            if (File.Exists(outputFile) && !Force && !Append)
+            {
+                console.Error.WriteLine($"A .gitignore already exists in the output directory. Add --force to overwrite or --append to append the existing .gitignore.");
+                return 1;
+            }
+
             Directory.CreateDirectory(CacheDirectory);
 
             if (string.IsNullOrWhiteSpace(Template))
@@ -85,7 +93,6 @@ namespace Mescher.DotNet.Cli.GitIgnore
 
             string cacheFile = Path.Combine(CacheDirectory, Template);
             string cacheFileTmp = Path.Combine(CacheDirectory, "_" + Template);
-            string outputFile = Path.Combine(output, GitIgnore);
 
             bool success = false;
             try
@@ -176,12 +183,6 @@ namespace Mescher.DotNet.Cli.GitIgnore
                 {
 
                 }
-            }
-
-            if (File.Exists(outputFile) && !Force && !Append)
-            {
-                console.Error.WriteLine($"A .gitignore already exists in the output directory. Add --force to overwrite or --append to append the existing .gitignore.");
-                return 1;
             }
 
             try
