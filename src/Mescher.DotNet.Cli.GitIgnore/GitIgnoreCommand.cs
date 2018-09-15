@@ -41,7 +41,8 @@ namespace Mescher.DotNet.Cli.GitIgnore
             Description = "Append the template to the .gitignore file if it exists")]
         public bool Append { get; set; }
 
-        [Option(CommandOptionType.NoValue, ShortName = "v", LongName = "version")]
+        [Option(CommandOptionType.NoValue, ShortName = "v", LongName = "version",
+            Description = "Displays version information")]
         public bool Version { get; set; }
 
         private async Task<int> OnExecuteAsync(CommandLineApplication app, IConsole console)
