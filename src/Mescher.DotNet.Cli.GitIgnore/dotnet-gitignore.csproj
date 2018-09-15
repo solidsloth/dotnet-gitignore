@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <id>dotnet-gitignore</id>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <title>dotnet-gitignore</title>
     <authors>solidsloth</authors>
     <owners>Mark Escher</owners>
@@ -14,7 +14,7 @@
     <iconUrl></iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A dotnet cli extensions for generating .gitignore files.</description>
-    <releaseNotes>Added version command.</releaseNotes>
+    <releaseNotes>Added description to version flag.</releaseNotes>
     <copyright>Copyright © Mark Escher 2018</copyright>
     <tags>.gitignore ignore dotnet cli</tags>
     <IsPackable>true</IsPackable>
