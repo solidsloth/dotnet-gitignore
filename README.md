@@ -30,6 +30,18 @@ dotnet gitignore
 
 Currently the tool only accepts a single argument: the path where to .gitignore should be generated. If no path is specified, then the current working directory is used.
 
-```powershell
+```cmd
 dotnet gitignore ../
+```
+
+## Update
+
+```cmd
+dotnet tool update -g dotnet-gitignore
+```
+
+## Uninstall
+
+```cmd
+dotnet tool uninstall -g dotnet-gitignore
 ```
