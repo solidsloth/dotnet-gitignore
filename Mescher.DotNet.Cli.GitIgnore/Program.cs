@@ -23,7 +23,7 @@ namespace Mescher.DotNet.Cli.GitIgnore
         [Argument(0, "Output", "The path where the .gitignore file should be saved")]
         public string Output { get; set; }
 
-        [Option(CommandOptionType.SingleOrNoValue, ShortName = "f", LongName = "force",
+        [Option(CommandOptionType.NoValue, ShortName = "f", LongName = "force",
             Description = "Overwrite any existing files automatically.")]
         public bool Force { get; set; }
 
