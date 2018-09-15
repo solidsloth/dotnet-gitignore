@@ -8,7 +8,7 @@ I like to use the dotnet cli to create projects while working with VSCode and it
 
 ## What it Does
 
-The tool downloads the official [Visual Studio .gitignore](https://github.com/github/gitignore/blob/master/VisualStudio.gitignore) from GitHub. It also caches a copy in your appdata folder in the event that you are offline.
+The tool downloads the official [Visual Studio .gitignore](https://github.com/github/gitignore/blob/master/VisualStudio.gitignore) from GitHub. It also caches a copy in your user profile folder in the event that you are offline.
 
 ## Install
 
