@@ -182,7 +182,7 @@ namespace Mescher.DotNet.Cli.GitIgnore
                     File.Copy(cacheFile, outputFile, Force);
                 }
             }
-            catch (IOException ex)
+            catch (IOException)
             {
                 console.Error.WriteLine($"Failed to download {GitIgnore}. Do you have permissions to write to \"{output}\"?");
                 return 1;
