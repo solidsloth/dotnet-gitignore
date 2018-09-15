@@ -4,6 +4,8 @@ using System.Net;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
+using Flurl;
+using Flurl.Http;
 
 namespace Mescher.DotNet.Cli.GitIgnore
 {
@@ -18,7 +20,9 @@ namespace Mescher.DotNet.Cli.GitIgnore
 
         const string GitIgnore = ".gitignore";
 
-        const string DefaultUrl = "https://raw.githubusercontent.com/github/gitignore/master/VisualStudio.gitignore";
+        const string BaseUrl = "https://raw.githubusercontent.com/github/gitignore/master/";
+
+        const string DefaultTemplate = "VisualStudio.gitignore";
 
         [Argument(0, "Output", "The path where the .gitignore file should be saved")]
         public string Output { get; set; }
@@ -27,7 +31,11 @@ namespace Mescher.DotNet.Cli.GitIgnore
             Description = "Overwrite any existing files automatically.")]
         public bool Force { get; set; }
 
-        private async Task OnExecuteAsync()
+        [Option(CommandOptionType.SingleValue, ShortName = "t", LongName = "template",
+            Description = "Specifies the .gitignore template to download. (Default is VisualStudio)")]
+        public string Template { get; set; }
+
+        private async Task<int> OnExecuteAsync(CommandLineApplication app, IConsole console)
         {
             string output = Path.GetFullPath(Output ?? Environment.CurrentDirectory);
 
@@ -39,70 +47,101 @@ namespace Mescher.DotNet.Cli.GitIgnore
                 }
                 else
                 {
-                    System.Console.Error.WriteLine("The specified output path does not exist.");
-                    Environment.Exit(1);
+                    console.Error.WriteLine("The specified output path does not exist.");
+                    return 1;
                 }
             }
 
-            string cacheFile = Path.Combine(CacheDirectory, GitIgnore);
-            string cacheFileTmp = Path.Combine(CacheDirectory, "_" + GitIgnore);
-            string outputFile = Path.Combine(output, GitIgnore);
+            Directory.CreateDirectory(CacheDirectory);
 
-            Directory.CreateDirectory(Path.GetDirectoryName(cacheFile));
+            if (string.IsNullOrWhiteSpace(Template))
+            {
+                Template = DefaultTemplate;
+            }
+            else
+            {
+                if (!Template.EndsWith(".gitignore"))
+                {
+                    Template = Template + ".gitignore";
+                }
+            }
+
+            string cacheFile = Path.Combine(CacheDirectory, Template);
+            string cacheFileTmp = Path.Combine(CacheDirectory, "_" + Template);
+            string outputFile = Path.Combine(output, GitIgnore);
 
             bool success = false;
             try
             {
-                await DownloadFileAsync(DefaultUrl, cacheFileTmp);
+                await BaseUrl.AppendPathSegment(Template).DownloadFileAsync(CacheDirectory, "_" + Template);
                 success = true;
             }
             catch (System.Net.WebException)
             {
                 if (File.Exists(cacheFile))
                 {
-                    System.Console.WriteLine($"Warn: Unable to download newer version of {GitIgnore}. Do you have an internet connection?");
-                    System.Console.WriteLine("      Using cached version.");
+                    console.WriteLine($"Warn: Unable to download newer version of {GitIgnore}. Do you have an internet connection?");
+                    console.WriteLine("      Using cached version.");
                 }
                 else
                 {
-                    System.Console.Error.WriteLine($"Failed to download {GitIgnore}. Do you have an internet connection?");
-                    Environment.Exit(1);
+                    console.Error.WriteLine($"Failed to download {GitIgnore}. Do you have an internet connection?");
+                    return 1;
                 }
             }
             catch (System.Net.Http.HttpRequestException)
             {
-                if (File.Exists(cacheFile))
-                {
-                    System.Console.WriteLine($"Warn: Unable to download newer version of {GitIgnore}. Do you have an internet connection?");
-                    System.Console.WriteLine("      Using cached version.");
-                }
-                else
-                {
-                    System.Console.Error.WriteLine($"Failed to download {GitIgnore}. Do you have an internet connection?");
-                    Environment.Exit(1);
-                }
+
             }
             catch (System.IO.IOException)
             {
                 // We failed to download the file to the cache directory, but we could try to download it directly to the output.
                 try
                 {
-                    System.Console.WriteLine($"Warn: Unable to cache file.");
+                    console.WriteLine($"Warn: Unable to cache file.");
 
-                    await DownloadFileAsync(DefaultUrl, output);
+                    await BaseUrl.AppendPathSegment(Template).DownloadFileAsync(CacheDirectory, GitIgnore);
 
                     // We don't need to proceed with the later copy of the cache file, because we're here.
-                    Environment.Exit(1);
+                    return 1;
                 }
                 catch
                 {
-                    System.Console.Error.WriteLine($"Failed to download {GitIgnore}. Could not write file.");
-                    Environment.Exit(1);
+                    console.Error.WriteLine($"Failed to download {GitIgnore}. Could not write file.");
+                    return 1;
+                }
+            }
+            catch (FlurlHttpException ex)
+            {
+                if (!ex.Call.Completed)
+                {
+                    if (File.Exists(cacheFile))
+                    {
+                        console.WriteLine($"Warn: Unable to download newer version of {GitIgnore}. Do you have an internet connection?");
+                        console.WriteLine("      Using cached version.");
+                    }
+                    else
+                    {
+                        console.Error.WriteLine($"Failed to download {GitIgnore}. Do you have an internet connection?");
+                        return 1;
+                    }
+                }
+                else
+                {
+                    switch (ex?.Call?.Response?.StatusCode ?? HttpStatusCode.InternalServerError)
+                    {
+                        case HttpStatusCode.NotFound:
+                            console.Error.WriteLine($"The template '{Template}' was not found.");
+                            return 1;
+                        default:
+                            console.Error.WriteLine($"Failed to download {GitIgnore}.");
+                            return 1;
+                    }
                 }
             }
             catch (Exception)
             {
-                System.Console.Error.WriteLine($"Failed to download {GitIgnore}.");
+                console.Error.WriteLine($"Failed to download {GitIgnore}.");
                 Environment.Exit(1);
             }
 
@@ -124,24 +163,26 @@ namespace Mescher.DotNet.Cli.GitIgnore
 
             if (File.Exists(outputFile) && !Force)
             {
-                System.Console.Error.WriteLine($"A .gitignore already exists in the output directory. Add --force to overwrite.");
-                Environment.Exit(1);
+                console.Error.WriteLine($"A .gitignore already exists in the output directory. Add --force to overwrite.");
+                return 1;
             }
 
             try
             {
                 File.Copy(cacheFile, outputFile, Force);
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-                System.Console.Error.WriteLine($"Failed to download {GitIgnore}. Do you have permissions to write to \"{output}\"?");
-                Environment.Exit(1);
+                console.Error.WriteLine($"Failed to download {GitIgnore}. Do you have permissions to write to \"{output}\"?");
+                return 1;
             }
             catch
             {
-                System.Console.Error.WriteLine($"Failed to download {GitIgnore}.");
-                Environment.Exit(1);
+                console.Error.WriteLine($"Failed to download {GitIgnore}.");
+                return 1;
             }
+
+            return 0;
         }
 
         ///<summary>
