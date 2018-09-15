@@ -13,8 +13,10 @@ namespace Mescher.DotNet.Cli.GitIgnore
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
-            console.WriteLine("Hello templates!");
-            return 0;
+            console.WriteLine("The templates command requires an argument");
+            console.WriteLine();
+            app.ShowHelp();
+            return 1;
         }
 
         [HelpOption]
