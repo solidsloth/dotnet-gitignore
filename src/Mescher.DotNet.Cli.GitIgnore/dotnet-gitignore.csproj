@@ -22,10 +22,6 @@
     <TieredCompilation>true</TieredCompilation>
   </PropertyGroup>
 
-  <files>
-    <file src="../../README.md">
-  </files>
-
   <ItemGroup>
     <PackageReference Include="Flurl.Http" Version="2.4.0" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.2.5" />
