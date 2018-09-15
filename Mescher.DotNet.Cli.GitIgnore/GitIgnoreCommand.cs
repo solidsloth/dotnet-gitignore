@@ -180,7 +180,7 @@ namespace Mescher.DotNet.Cli.GitIgnore
 
             if (File.Exists(outputFile) && !Force && !Append)
             {
-                console.Error.WriteLine($"A .gitignore already exists in the output directory. Add --force to overwrite.");
+                console.Error.WriteLine($"A .gitignore already exists in the output directory. Add --force to overwrite or --append to append the existing .gitignore.");
                 return 1;
             }
 
