@@ -8,8 +8,8 @@ namespace Mescher.DotNet.Cli.GitIgnore
 {
     [HelpOption]
     [Command("templates")]
-    [Subcommand("list", typeof(List))]
-    public class Templates
+    [Subcommand("list", typeof(ListCommand))]
+    public class TemplatesCommand
     {
         private int OnExecute(CommandLineApplication app, IConsole console)
         {
@@ -21,7 +21,7 @@ namespace Mescher.DotNet.Cli.GitIgnore
 
         [HelpOption]
         [Command(Description = "List available templates")]
-        private class List
+        private class ListCommand
         {
             [Argument(0, "Search Pattern", "A pattern to filter the results. Only accepts ab*, *bc, and a*c patterns.")]
             public string SearchPattern { get; set; } = "";

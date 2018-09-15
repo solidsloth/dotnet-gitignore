@@ -9,11 +9,11 @@ using Flurl.Http;
 
 namespace Mescher.DotNet.Cli.GitIgnore
 {
-    [Subcommand("templates", typeof(Templates))]
-    class Program
+    [Subcommand("templates", typeof(TemplatesCommand))]
+    class GitIgnoreCommand
     {
         public static int Main(string[] args)
-            => CommandLineApplication.Execute<Program>(args);
+            => CommandLineApplication.Execute<GitIgnoreCommand>(args);
 
         public static string CacheDirectory =>
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dotnet", "tools", ".dotnet-gitignore", "cache");
