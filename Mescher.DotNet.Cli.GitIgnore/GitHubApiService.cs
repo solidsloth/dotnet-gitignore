@@ -55,7 +55,7 @@ namespace Mescher.DotNet.Cli.GitIgnore
             }
 
             // Return just the file names.
-            return files.Select(f => "    " + f.Path.Replace(".gitignore", string.Empty));
+            return files.Select(f => f.Path.Replace(".gitignore", string.Empty));
         }
     }
 }

@@ -38,6 +38,11 @@ namespace Mescher.DotNet.Cli.GitIgnore
         private class ListCommand
         {
             /// <summary>
+            /// The indent to be prepended to the listing.
+            /// </summary>
+            const string Indent = "    ";
+
+            /// <summary>
             /// The search pattern used to list packages. Can be a regex string, or a wildcard string.
             /// </summary>
             /// <remarks>
@@ -62,14 +67,14 @@ namespace Mescher.DotNet.Cli.GitIgnore
             /// <returns></returns>
             private async Task<int> OnExecuteAsync(CommandLineApplication app, IConsole console)
             {
-                // Create a new api service.
-                var api = new GitHubApiService();
+                // Create a new template service.
+                var templateService = new TemplateService();
 
                 IEnumerable<string> templates;
                 try
                 {
                     // Get an available template listing.
-                    templates = await api.GetAvailableTemplates(SearchPattern, IsRegex);
+                    templates = await templateService.GetAvailableTemplates(SearchPattern, IsRegex);
                 }
                 catch (FormatException ex)
                 {
@@ -89,7 +94,7 @@ namespace Mescher.DotNet.Cli.GitIgnore
                 // Write each of the templates to the console.
                 foreach (string template in templates)
                 {
-                    console.WriteLine(template);
+                    console.WriteLine(Indent + template);
                 }
 
                 // Return a success status code.

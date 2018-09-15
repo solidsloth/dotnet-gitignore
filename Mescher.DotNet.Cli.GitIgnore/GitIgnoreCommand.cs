@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -64,10 +65,22 @@ namespace Mescher.DotNet.Cli.GitIgnore
             }
             else
             {
-                if (!Template.EndsWith(".gitignore"))
+                if (Template.EndsWith(".gitignore"))
                 {
-                    Template = Template + ".gitignore";
+                    Template = Template.Replace(".gitignore", string.Empty);
                 }
+
+                var templateService = new TemplateService();
+                string templateName = (await templateService.GetAvailableTemplates())
+                    .FirstOrDefault(t => string.Equals(t, Template, StringComparison.OrdinalIgnoreCase));
+
+                if (templateName == null)
+                {
+                    console.Error.WriteLine($"The template '{Template}' was not found.");
+                    return 1;
+                }
+
+                Template = templateName + ".gitignore";
             }
 
             string cacheFile = Path.Combine(CacheDirectory, Template);
