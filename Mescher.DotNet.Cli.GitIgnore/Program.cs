@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Mescher.DotNet.Cli.GitIgnore
 {
+    [Subcommand("templates", typeof(Templates))]
     class Program
     {
         public static int Main(string[] args)
