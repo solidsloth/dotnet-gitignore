@@ -20,6 +20,8 @@ dotnet tool install -g dotnet-gitignore
 
 This will install the tool globally. See [this page](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-tool-install) for more information.
 
+**Note**: You likely will need to restart your terminal to update your path before the ``dotnet gitignore`` command will work.
+
 ## Usage
 
 The tool installs as a dotnet cli extension and can be run using:
