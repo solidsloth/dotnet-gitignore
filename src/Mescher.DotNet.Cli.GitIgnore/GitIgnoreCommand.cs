@@ -7,6 +7,7 @@ using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
 using Flurl;
 using Flurl.Http;
+using System.Reflection;
 
 namespace Mescher.DotNet.Cli.GitIgnore
 {
@@ -40,8 +41,18 @@ namespace Mescher.DotNet.Cli.GitIgnore
             Description = "Append the template to the .gitignore file if it exists")]
         public bool Append { get; set; }
 
+        [Option(CommandOptionType.NoValue, ShortName = "v", LongName = "version")]
+        public bool Version { get; set; }
+
         private async Task<int> OnExecuteAsync(CommandLineApplication app, IConsole console)
         {
+            // If the version flag was given, print the version and exit.
+            if (Version)
+            {
+                PrintVersion(console);
+                return 0;
+            }
+
             string output = Path.GetFullPath(Output ?? Environment.CurrentDirectory);
 
             if (!Directory.Exists(output))
@@ -208,6 +219,19 @@ namespace Mescher.DotNet.Cli.GitIgnore
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// Prints the current assembly version.
+        /// </summary>
+        /// <param name="console">The console to write to.</param>
+        public void PrintVersion(IConsole console)
+        {
+            // Get the current version.
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            // Write the first 3 fields of the version.
+            console.WriteLine(version.ToString(3));
         }
 
         ///<summary>
