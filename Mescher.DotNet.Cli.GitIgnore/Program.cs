@@ -35,6 +35,10 @@ namespace Mescher.DotNet.Cli.GitIgnore
             Description = "Specifies the .gitignore template to download. (Default is VisualStudio)")]
         public string Template { get; set; }
 
+        [Option(CommandOptionType.NoValue, ShortName = "a", LongName = "append",
+            Description = "Append the template to the .gitignore file if it exists")]
+        public bool Append { get; set; }
+
         private async Task<int> OnExecuteAsync(CommandLineApplication app, IConsole console)
         {
             string output = Path.GetFullPath(Output ?? Environment.CurrentDirectory);
@@ -161,7 +165,7 @@ namespace Mescher.DotNet.Cli.GitIgnore
                 }
             }
 
-            if (File.Exists(outputFile) && !Force)
+            if (File.Exists(outputFile) && !Force && !Append)
             {
                 console.Error.WriteLine($"A .gitignore already exists in the output directory. Add --force to overwrite.");
                 return 1;
@@ -169,7 +173,14 @@ namespace Mescher.DotNet.Cli.GitIgnore
 
             try
             {
-                File.Copy(cacheFile, outputFile, Force);
+                if (Append)
+                {
+                    File.AppendAllLines(outputFile, File.ReadAllLines(cacheFile));
+                }
+                else
+                {
+                    File.Copy(cacheFile, outputFile, Force);
+                }
             }
             catch (IOException ex)
             {
