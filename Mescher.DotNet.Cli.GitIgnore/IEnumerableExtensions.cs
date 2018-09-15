@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Mescher.DotNet.Cli.GitIgnore
 {
-    public static class ListFilterer
+    public static class IEnumerableExtensions
     {
         public static IEnumerable<GitFile> WhereGitFileMatches(this IEnumerable<GitFile> files, string searchPattern)
         {
