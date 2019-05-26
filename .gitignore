@@ -331,5 +331,8 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+# VS History for Visual Studio
+.vshistory/
+
 # Ignore Nuget Folders
 **/*npkg
