@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <id>dotnet-gitignore</id>
-    <version>1.1.2</version>
+    <version>1.2.0</version>
     <title>dotnet-gitignore</title>
     <authors>solidsloth</authors>
     <owners>Mark Escher</owners>
