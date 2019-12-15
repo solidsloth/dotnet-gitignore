@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1;netcoreapp3.0</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <id>dotnet-gitignore</id>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <title>dotnet-gitignore</title>
     <authors>solidsloth</authors>
     <owners>Mark Escher</owners>
